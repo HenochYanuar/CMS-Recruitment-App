@@ -10,7 +10,7 @@ const authenticateJWT = (req, res, next) => {
         return res.sendStatus(403)
       }
 
-      if (user.role !== 'admin') {
+      if (user.role !== 'admin_hr') {
         return res.status(403).send('Forbidden: Admins only')
       }
 
