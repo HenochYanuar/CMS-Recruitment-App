@@ -1,0 +1,79 @@
+<div class="card shadow-lg">
+  <div class="card-header bg-secondary">
+    <div class="text-center "><h2>Users List</h2></div>
+  </div>
+  <div class="card-body">
+    <div class="mb-4" style="display: flex; flex-direction:row-reverse;">
+      <div class="col-md-3">
+        <form method="GET" action="">
+          <div class="input-group">
+            <input type="text" class="form-control" name="search" placeholder="Search Users..." value="<%= context.search %>">
+            <div class="input-group-append">
+              <button class="btn btn-secondary" type="submit"><i class="fa fa-search"></i></button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <table class="table table-bordered table-hover mb-5">
+      <thead class="table-hover" style="background-color: #819293;">
+        <tr style="color: white;">
+          <th>NO</th>
+          <th class="col-lg-2 text-center">Username</th>
+          <th class="col-lg-3 text-center">Name</th>
+          <th class="col-lg-2 text-center">Email</th>
+          <th class="col-lg-1 text-center">isRegistered</th>
+          <th class="col-lg-4 text-center">Updated At</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if (context.users && context.users.length > 0) { %>
+        <% context.users.forEach((user, index) => { %>
+        <tr>
+          <td class="text-center align-middle"><%= index + 1 %></td>
+          <td class="text-center align-middle">
+            <%= user.username %>
+          </td>
+          <td class="text-center align-middle text-capitalize">
+            <%= user.name %>
+          </td>
+          <td class="text-center align-middle">
+            <%= user.email %>
+          </td>
+          <td class="text-center align-middle">
+            <%= user.isRegister %>
+          </td>
+          <td class="text-center align-middle">
+            <%= user.updated_at %>
+          </td>
+        </tr>
+        <% }) %>
+        <% } else { %>
+        <p class="text-center">No Users yet !!.</p>
+        <% } %>
+      </tbody>
+    </table>
+    <div style="display: flex; flex-direction:row-reverse;">
+      <div class="pagination">
+        <% if (context.currentPage > 1) { %>
+        <a class="btn btn-secondary mr-1"
+          href="?page=<%= context.currentPage - 1 %>&limit=<%= context.limit %>">Previous</a>
+        <% } %>
+
+        <% for (let i = 1; i <= context.totalPages; i++) { %>
+        <% if (i === context.currentPage) { %>
+        <span class="btn btn-primary mr-1"><%= i %></span>
+        <% } else { %>
+        <a class="btn btn-light mr-1"
+          href="?page=<%= i %>&limit=<%= context.limit %>"><%= i %></a>
+        <% } %>
+        <% } %>
+
+        <% if (context.currentPage < context.totalPages) { %>
+        <a class="btn btn-secondary"
+          href="?page=<%= context.currentPage + 1 %>&limit=<%= context.limit %>">Next</a>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,49 @@
+<div class="card">
+  <div class="card-header text-center bg-secondary">
+    <h1>CMS Portal Berita</h1>
+    <img style="width:25%" src="/img/banner-logo.png" alt="winnicode logo">
+  </div>
+  <div class="card-body">
+    <div class="row">
+      <div class="col-lg-4">
+        <div class="card bg-pink-p shadow-lg p-3 mb-5 bg-body-tertiary rounded">
+          <div class="card-header">
+            <h3 class="m-0 text-center">Articles</h3>
+          </div>
+          <div class="card-body">
+            <h4><%= context.articles.count %> Articles</h4>
+            <p class="card-text">
+              There are <%= context.articles.count %> articles that have been published
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="card bg-pink-p shadow-lg p-3 mb-5 bg-body-tertiary rounded">
+          <div class="card-header">
+            <h3 class="m-0 text-center">Registerd User</h3>
+          </div>
+          <div class="card-body">
+            <h4><%= context.users.registUser.count %> User Account</h4>
+            <p class="card-text">
+              There are <%= context.users.registUser.count %> user accounts already registered
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-4">
+        <div class="card bg-pink-p shadow-lg p-3 mb-5 bg-body-tertiary rounded">
+          <div class="card-header">
+            <h3 class="m-0 text-center">Not Registerd User</h3>
+          </div>
+          <div class="card-body text-white">
+            <h4><%= context.users.notRegistUser.count %> User Account</h4>
+            <p class="card-text">
+              There are <%= context.users.notRegistUser.count %> unregistered user accounts
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

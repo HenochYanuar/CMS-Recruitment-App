@@ -1,0 +1,176 @@
+<div class="card shadow-sm mb-5">
+  <div class="card-header pb-0">
+    <div class="container-fluid">
+      <h4>Add News Article</h4>
+      <p>Create a new news article in the following form</p>
+    </div>
+  </div>
+  <div class="card-body">
+    <form action="/admin/articles" method="POST" enctype="multipart/form-data"
+      novalidate>
+      <table class="table table-borderless">
+        <tr>
+          <td class="text-right col-2">
+            <label style="color: #838383;" for="articleTitle">Title</label>
+          </td>
+          <td class="col-10">
+            <div class="form-group">
+              <input required class="form-control w-100" type="text"
+                id="articleTitle"
+                name="articleTitle">
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="text-right">
+            <label style="color: #838383;" for="addressDetail">Gambar</label>
+          </td>
+          <td>
+            <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                <span class="input-group-text"
+                  id="inputGroupFileAddon01">Upload</span>
+              </div>
+              <div class="custom-file" style="cursor: pointer;">
+                <input style="cursor: pointer;" required
+                  class="form-control w-100" type="file" id="foto" name="foto"
+                  accept="image/jpeg, image/png, image/jpg"
+                  placeholder="Item Photo">
+                <label class="custom-file-label" for="foto">Choose file</label>
+              </div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="text-right col-2">
+            <label style="color: #838383;" for="category">Category</label>
+          </td>
+          <td class="col-10">
+            <div class="form-group">
+              <select required class="form-control w-100" type="text"
+                id="selectCategory" name="category">
+                <option selected disabled>Choose an Article Category</option>
+                <% for (let i = 0; i < context.categories.length; i++) { %>
+                <option value="<%= context.categories[i] %>"><%= context.categories[i] %></option>
+                <% } %>
+                <option>Lainnya</option>
+              </select>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="text-right">
+            <label style="color: #838383;" for="content">Content</label>
+          </td>
+          <td>
+            <div class="form-group">
+              <textarea class="form-control w-100" type="text"
+                id="content" name="content"></textarea>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="text-right col-2">
+            <label style="color: #838383;">Tags</label>
+          </td>
+          <td class="col-10">
+            <div id="tagsContainer" class="form-group">
+              <div class="input-group mb-2">
+                <input class="form-control w-90 mr-3" required type="text" name="tags[]">
+                <button type="button" class="btn btn-outline-primary" style="width: 50px;"
+                  id="addTagBtn">+</button>
+              </div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label style="color: #838383;"></label>
+          </td>
+          <td>
+            <div>
+              <button class="btn btn-info pb-2 mb-3" type="submit"
+                style="width: 150px; height: 48px; background-color: #f23567; border: #f23567;"
+                onMouseOver="this.style.background='#f5497b'; this.style.transition='transform 0.3s ease'"
+                onMouseOut="this.style.background='#f23567';">
+                Simpan
+              </button>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </form>
+  </div>
+</div>
+
+<script>
+  document.getElementById("selectCategory").addEventListener("change", function() {
+    const customCategoryRow = document.getElementById("customCategoryRow")
+
+    if (this.value === "Lainnya") {
+        if (!customCategoryRow) {
+            const newRow = `
+                <tr id="customCategoryRow">
+                  <td class="text-right col-2">
+                    <label style="color: #838383;"></label>
+                  </td>
+                  <td class="col-10">
+                    <div class="form-group">
+                      <input class="form-control w-100" type="text" id="customCategoryInput" name="category" placeholder="Input The Category" required>
+                    </div>
+                  </td>
+                </tr>
+            `
+            selectCategory.closest("tr").insertAdjacentHTML('afterend', newRow)
+        }
+    } else {
+        if (customCategoryRow) customCategoryRow.remove()
+    }
+  })
+
+  document.querySelector('form').addEventListener('submit', function(event) {
+  tinymce.triggerSave()
+
+  if (!document.getElementById("content").value.trim()) {
+    alert("Content field is required.")
+    event.preventDefault()
+    return
+  }
+
+  this.submit()
+  })
+
+  document.getElementById("addTagBtn").addEventListener("click", function() {
+    const tagsContainer = document.getElementById("tagsContainer")
+    const tagInputs = tagsContainer.querySelectorAll('input[name="tags[]"]')
+
+    if (tagInputs.length < 3) {
+      const newTagInputGroup = document.createElement("div")
+      newTagInputGroup.classList.add("input-group", "mb-2")
+
+      const newTagInput = document.createElement("input")
+      newTagInput.type = "text"
+      newTagInput.name = "tags[]"
+      newTagInput.classList.add("form-control", "w-90", "mr-3")
+
+      const removeTagBtn = document.createElement("button")
+      removeTagBtn.type = "button"
+      removeTagBtn.classList.add("btn", "btn-outline-danger")
+      removeTagBtn.style = "width: 50px;"
+      removeTagBtn.textContent = "-"
+      removeTagBtn.addEventListener("click", function() {
+        tagsContainer.removeChild(newTagInputGroup)
+      })
+
+      newTagInputGroup.appendChild(newTagInput)
+      newTagInputGroup.appendChild(removeTagBtn)
+      tagsContainer.appendChild(newTagInputGroup)
+    } else {
+      alert("maximum of 3 tags in 1 article")
+    }
+  })
+</script>
+<!-- Script element sourcing TinyMCE -->
+<script type="application/javascript" src="/tinymce/tinymce.min.js"></script>
+<!-- Script element sourcing the TinyMCE configuration -->
+<script type="application/javascript" src="/js/tinymce-config.js"></script>
