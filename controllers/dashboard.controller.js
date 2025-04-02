@@ -1,21 +1,17 @@
 const userModel = require('../models/user.model')
-const articleModel = require('../models/article.model')
+const jobModel = require('../models/job.model')
+const interviewModel = require('../models/interview.model')
 const { err500, err404 } = require('../utils/error')
 const layout = 'layout/index'
 
 const dashboard = async (req, res) => {
   try {
     const user = await userModel.findByEmail(req.user.email)
-    const articles = await articleModel.getCountAll()
-
-    const role  = 'user'
-    const userRegist = true
-    const userNotRegist = false
-
-    const users = await userModel.getCountAll(role, userRegist, userNotRegist)
+    const jobs = await jobModel.getCountAll(isExpired=false)
+    const interviews = await interviewModel.getCountAll(interviewStatus="scheduled")
 
     const context = {
-      user, articles, users
+      user, jobs, interviews
     }
   
     res.status(200).render('dashboard/index', { context, title: 'Dashboard Admin', layout})

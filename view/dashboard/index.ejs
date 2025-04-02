@@ -1,45 +1,32 @@
 <div class="card">
   <div class="card-header text-center bg-secondary">
-    <h1>CMS Portal Berita</h1>
+    <h1>Employee Recruitment App</h1>
     <img style="width:25%" src="/img/banner-logo.png" alt="winnicode logo">
   </div>
   <div class="card-body">
     <div class="row">
-      <div class="col-lg-4">
-        <div class="card bg-pink-p shadow-lg p-3 mb-5 bg-body-tertiary rounded">
+      <div class="col-lg-6">
+        <div class="card bg-info shadow-lg p-3 mb-5 bg-body-tertiary rounded">
           <div class="card-header">
-            <h3 class="m-0 text-center">Articles</h3>
+            <h3 class="m-0 text-center">Jobs Vacancy</h3>
           </div>
           <div class="card-body">
-            <h4><%= context.articles.count %> Articles</h4>
+            <h4><%= context.jobs.count %> Jobs Vacancy</h4>
             <p class="card-text">
-              There are <%= context.articles.count %> articles that have been published
+              There are <%= context.jobs.count %> Jobs vacancy that have been published
             </p>
           </div>
         </div>
       </div>
-      <div class="col-lg-4">
-        <div class="card bg-pink-p shadow-lg p-3 mb-5 bg-body-tertiary rounded">
+      <div class="col-lg-6">
+        <div class="card bg-info shadow-lg p-3 mb-5 bg-body-tertiary rounded">
           <div class="card-header">
-            <h3 class="m-0 text-center">Registerd User</h3>
+            <h3 class="m-0 text-center">Interview Schedules</h3>
           </div>
           <div class="card-body">
-            <h4><%= context.users.registUser.count %> User Account</h4>
+            <h4><%= context.interviews.count %> Schedules</h4>
             <p class="card-text">
-              There are <%= context.users.registUser.count %> user accounts already registered
-            </p>
-          </div>
-        </div>
-      </div>
-      <div class="col-lg-4">
-        <div class="card bg-pink-p shadow-lg p-3 mb-5 bg-body-tertiary rounded">
-          <div class="card-header">
-            <h3 class="m-0 text-center">Not Registerd User</h3>
-          </div>
-          <div class="card-body text-white">
-            <h4><%= context.users.notRegistUser.count %> User Account</h4>
-            <p class="card-text">
-              There are <%= context.users.notRegistUser.count %> unregistered user accounts
+              There are <%= context.interviews.count %> interview schedules
             </p>
           </div>
         </div>
