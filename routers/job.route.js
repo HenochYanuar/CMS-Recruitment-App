@@ -7,8 +7,8 @@ const jobRouter = express.Router()
 jobRouter.use(authenticateJWT)
 
 jobRouter.get('/jobs', jobController.getAllJobs)
-// jobRouter.get('/jobs/add', jobController.formAddJob)
-// jobRouter.post('/articles', articleController.uploadMiddleware, articleController.postAddArticle)
+jobRouter.get('/jobs/add', jobController.formAddJob)
+jobRouter.post('/jobs', jobController.postAddJob)
 // jobRouter.get('/articles/:id', articleController.getDetailArticle)
 // jobRouter.delete('/articles/:id', articleController.deleteArticle)
 

@@ -13,15 +13,6 @@ const getCountAll = async (isExpired) => {
   }
 }
 
-// const getAllJobs = async () => {
-//   try {
-//     return await db('jobs').select()
-
-//   } catch (error) {
-//     throw new Error('Error getting all jobs')
-    
-//   }
-// }
 const getAllJobs = async (page, limit, search) => {
   try {
     const offset = (page - 1) * limit
@@ -34,6 +25,7 @@ const getAllJobs = async (page, limit, search) => {
             .orWhere(db.raw('LOWER(type)'), 'like', `%${search.toLowerCase()}%`)
         }
       })
+      .andWhere({ isExpired: false })
       .orderBy('updated_at', 'desc')
       .limit(limit)
       .offset(offset)
@@ -46,6 +38,7 @@ const getAllJobs = async (page, limit, search) => {
             .orWhere(db.raw('LOWER(type)'), 'like', `%${search.toLowerCase()}%`)
         }
       })
+      .andWhere({ isExpired: false })
       .count('jobs.id as count')
 
     return { jobs, totalItems: parseInt(count) }
@@ -55,6 +48,16 @@ const getAllJobs = async (page, limit, search) => {
   }
 }
 
+const create = async (data) => {
+  try {
+    return await db('jobs').insert(data)
+
+  } catch (error) {
+    throw new Error('Error failed create job vacancy' + error.message)
+
+  }
+}
+
 module.exports = {
-  getCountAll, getAllJobs
+  getCountAll, getAllJobs, create
 }

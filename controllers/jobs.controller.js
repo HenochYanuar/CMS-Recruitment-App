@@ -80,7 +80,49 @@ const getAllJobs = async (req, res) => {
   }
 }
 
+const formAddJob = async (req, res) => {
+  try {
+    const user = await userModel.findByEmail(req.user.email)
+
+    const types = ['Full-time', 'Part-time', 'Freelance', 'Internship']
+
+    const context = {
+      user, types
+    }
+
+    const title = 'Form Add Job Vacancy'
+
+    res.status(200).render('job/formAdd', { context, title, layout })
+
+  } catch (error) {
+    console.error('Error in formAddJob:', error)
+    res.status(500).render('error/error', err500)
+  }
+}
+
+const postAddJob = async (req, res) => {
+  try {
+    let { title, description, type, min_salary, max_salary } = req.body
+
+    const id = idCreator.createID()
+
+    await jobModel.create({
+      id,
+      title,
+      description,
+      type,
+      salary_min: min_salary,
+      salary_max: max_salary
+    })
+
+    res.status(201).redirect('/admin/jobs')
+
+  } catch (error) {
+    console.error('Error in postAddJob:', error.message)
+    res.status(500).render('error/error', err500)
+  }
+}
 
 module.exports = {
-  getAllJobs
+  getAllJobs, formAddJob, postAddJob
 }
