@@ -68,6 +68,24 @@ const getOne = async (id) => {
   }
 }
 
+const update = async (id, title, description, type, min_salary, max_salary) => {
+  try {
+    return await db('jobs')
+      .where('id', id)
+      .update({
+        title,
+        description,
+        type,
+        salary_min: min_salary,
+        salary_max: max_salary
+      })
+
+  } catch (error) {
+    throw new Error('Error failed posts the update job vacancy' + error.message)
+
+  }
+}
+
 module.exports = {
-  getCountAll, getAllJobs, create, getOne
+  getCountAll, getAllJobs, create, getOne, update
 }

@@ -10,6 +10,8 @@ jobRouter.get('/jobs', jobController.getAllJobs)
 jobRouter.get('/jobs/add', jobController.formAddJob)
 jobRouter.post('/jobs', jobController.postAddJob)
 jobRouter.get('/jobs/:id', jobController.getDetailJob)
+jobRouter.get('/jobs/edit/:id', jobController.formEditJob)
+jobRouter.patch('/jobs', jobController.postEditJob)
 // jobRouter.delete('/articles/:id', articleController.deleteArticle)
 
 

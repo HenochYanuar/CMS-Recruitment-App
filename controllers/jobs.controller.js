@@ -104,9 +104,9 @@ const formAddJob = async (req, res) => {
 const postAddJob = async (req, res) => {
   try {
     let { title, description, type, min_salary, max_salary } = req.body
-
+    
     const id = idCreator.createID()
-
+    
     await jobModel.create({
       id,
       title,
@@ -115,9 +115,9 @@ const postAddJob = async (req, res) => {
       salary_min: min_salary,
       salary_max: max_salary
     })
-
+    
     res.status(201).redirect('/admin/jobs')
-
+    
   } catch (error) {
     console.error('Error in postAddJob:', error.message)
     res.status(500).render('error/error', err500)
@@ -126,21 +126,21 @@ const postAddJob = async (req, res) => {
 
 const getDetailJob = async (req, res) => {
   try {
-    const user = await userModel.findByEmail(req.user?.email)
-
+    const user = await userModel.findByEmail(req.user.email)
+    
     if (!user) {
       return res.status(404).render('error/error', err404)
     }
-
+    
     const job = await jobModel.getOne(req.params.id)
-
+    
     if (!job) {
       return res.status(404).render('error/error', err404)
     }
-
+    
     const updatedAt = moment(job.updated_at)
     const now = moment()
-
+    
     let timeText = ''
     const diffInYears = now.diff(updatedAt, 'years')
     const diffInMonths = now.diff(updatedAt, 'months')
@@ -156,7 +156,7 @@ const getDetailJob = async (req, res) => {
     else if (diffInHours >= 1) timeText = `${diffInHours} jam yang lalu`
     else if (diffInMinutes >= 1) timeText = `${diffInMinutes} menit yang lalu`
     else timeText = 'Baru saja'
-
+    
     const context = {
       user,
       job: {
@@ -164,7 +164,7 @@ const getDetailJob = async (req, res) => {
         timeDifference: timeText
       }
     }
-
+    
     const title = 'Detail Job Vacancy'
 
     res.status(200).render('job/detail', {
@@ -180,6 +180,57 @@ const getDetailJob = async (req, res) => {
   }
 }
 
+const formEditJob = async (req, res) => {
+  try {
+    const user = await userModel.findByEmail(req.user.email)
+
+    if (!user) {
+      return res.status(404).render('error/error', err404)
+    }
+
+    const job = await jobModel.getOne(req.params.id)
+
+    if (!job) {
+      return res.status(404).render('error/error', err404)
+    }
+
+    const types = ['Full-time', 'Part-time', 'Freelance', 'Internship']
+
+    const context = {
+      user, types, job
+    }
+
+    const title = 'Form Edit Job Vacancy'
+
+    res.status(200).render('job/formEdit', { context, title, layout })
+
+  } catch (error) {
+    console.error('Error in formEditJob:', error)
+    res.status(500).render('error/error', err500)
+  }
+}
+
+const postEditJob = async (req, res) => {
+  try {
+    let { id, title, description, type, min_salary, max_salary } = req.body
+    
+    await jobModel.update({
+      id,
+      title,
+      description,
+      type,
+      min_salary,
+      max_salary
+    })
+    
+    res.status(201).redirect(`/admin/jobs/${id}`)
+    
+  } catch (error) {
+    console.error('Error in postEditJob:', error.message)
+    res.status(500).render('error/error', err500)
+  }
+}
+
 module.exports = {
-  getAllJobs, formAddJob, postAddJob, getDetailJob
+  getAllJobs, formAddJob, postAddJob, getDetailJob, formEditJob, postEditJob
 }
