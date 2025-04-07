@@ -9,7 +9,7 @@ const bodyParser = require('body-parser')
 const { err500, err404 } = require('./utils/error')
 const { loginRouter } = require('./routers/login.route')
 const { dashboardRouter } = require('./routers/dashboard.route')
-const { articleRouter } = require('./routers/article.route')
+const { jobRouter } = require('./routers/job.route')
 const { userRouter } = require('./routers/user.route')
 
 const port = process.env.PORT
@@ -51,7 +51,7 @@ server.use(expressLayouts)
 
 server.use('/admin', dashboardRouter)
 
-server.use('/admin', articleRouter)
+server.use('/admin', jobRouter)
 
 server.use('/admin', userRouter)
 
