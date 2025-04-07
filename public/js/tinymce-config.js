@@ -1,5 +1,5 @@
 tinymce.init({
-  selector: '#content',
+  selector: '#description',
   height: 300,
   menubar: false,
   plugins: [
