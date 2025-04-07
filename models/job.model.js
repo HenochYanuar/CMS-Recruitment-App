@@ -58,6 +58,16 @@ const create = async (data) => {
   }
 }
 
+const getOne = async (id) => {
+  try {
+    return await db('jobs').where({ id }).first()
+
+  } catch (error) {
+    throw new Error('Error geting a job vacancy by id')
+
+  }
+}
+
 module.exports = {
-  getCountAll, getAllJobs, create
+  getCountAll, getAllJobs, create, getOne
 }
