@@ -7,7 +7,7 @@
         <li class="mb-4"><i class="far fa-money-bill-alt"></i><%= formatCurrency(context.job.salary_min) %> – <%= formatCurrency(context.job.salary_max)  %>/month</li>
       </ul>
       <div class="d-flex gap-2 mt-5 ">
-        <a href="" class="btn btn-warning rounded-pill px-4 mr-2"><i class="fas fa-edit"></i> Edit</a> 
+        <a href="/admin/jobs/edit/<%= context.job.id %>" class="btn btn-warning rounded-pill px-4 mr-2"><i class="fas fa-edit"></i> Edit</a> 
         <a href="" class="btn btn-danger rounded-pill px-4 mr-2"><i class="fas fa-trash"></i> Expired</a>
       </div>
     </div>

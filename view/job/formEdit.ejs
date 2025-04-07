@@ -1,0 +1,141 @@
+<div class="card shadow-sm mb-5">
+  <div class="card-header pb-0">
+    <div class="container-fluid">
+      <h4>Edit Job Vacancy</h4>
+      <p>Update a job vacancy in the following form</p>
+    </div>
+  </div>
+  <div class="card-body">
+    <form action="/admin/jobs?method=PATCH" method="POST" >
+      <input type="text" name="id" name="id" value="<%= context.job.id %>" hidden>
+      <table class="table table-borderless">
+        <tr>
+          <td class="text-right col-2">
+            <label style="color: #838383;" for="title">Title</label>
+          </td>
+          <td class="col-10">
+            <div class="form-group">
+              <input required class="form-control w-100" type="text" value="<%= context.job.title %>"
+                id="title"
+                name="title">
+            </div>
+          </td>
+        </tr>
+        <td class="text-right col-2">
+          <label style="color: #838383;" for="type">Type</label>
+        </td>
+        <td class="col-10">
+          <div class="form-group">
+              <select required class="form-control w-100" type="text"
+                id="selectType" name="type">
+                <option selected disabled>Choose an vacancy type</option>
+                <% for (let i = 0; i < context.types.length; i++) { %>
+                <option value="<%= context.types[i] %>" 
+                  <%= context.types[i] === context.job.type ? 'selected' : '' %> >
+                  <%= context.types[i] %>
+                </option>
+                <% } %>
+              </select>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="text-right col-2">
+            <label style="color: #838383;" for="min_salary">Minimum Salary (Rp)</label>
+          </td>
+          <td class="col-10">
+            <div class="form-group">
+              <input required class="form-control w-100" type="number" min="0" step="100000" required
+                value="<%= context.job.salary_min %>"
+                id="min_salary"
+                name="min_salary">
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="text-right col-2">
+            <label style="color: #838383;" for="max_salary">Maximum Salary (Rp)</label>
+          </td>
+          <td class="col-10">
+            <div class="form-group">
+              <input required class="form-control w-100" type="number" min="0" step="100000" required
+                value="<%= context.job.salary_max %>"
+                id="max_salary"
+                name="max_salary">
+            </div>
+          </td>
+        </tr>
+        <tr>
+        <tr>
+          <td class="text-right">
+            <label style="color: #838383;" for="description">Description</label>
+          </td>
+          <td>
+            <div class="form-group">
+              <textarea class="form-control w-100" type="text"
+                id="description" name="description"><%= context.job.description %></textarea>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label style="color: #838383;"></label>
+          </td>
+          <td>
+            <div>
+              <button class="btn btn-info pb-2 mb-3" type="submit"
+                style="width: 150px; height: 48px; background-color: #f23567; border: #f23567;"
+                onMouseOver="this.style.background='#f5497b'; this.style.transition='transform 0.3s ease'"
+                onMouseOut="this.style.background='#f23567';">
+                Simpan
+              </button>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </form>
+  </div>
+</div>
+
+<script>
+  document.getElementById("selectCategory").addEventListener("change", function() {
+    const customCategoryRow = document.getElementById("customCategoryRow")
+
+    if (this.value === "Lainnya") {
+        if (!customCategoryRow) {
+            const newRow = `
+                <tr id="customCategoryRow">
+                  <td class="text-right col-2">
+                    <label style="color: #838383;"></label>
+                  </td>
+                  <td class="col-10">
+                    <div class="form-group">
+                      <input class="form-control w-100" type="text" id="customCategoryInput" name="category" placeholder="Input The Category" required>
+                    </div>
+                  </td>
+                </tr>
+            `
+            selectCategory.closest("tr").insertAdjacentHTML('afterend', newRow)
+        }
+    } else {
+        if (customCategoryRow) customCategoryRow.remove()
+    }
+  })
+
+  document.querySelector('form').addEventListener('submit', function(event) {
+  tinymce.triggerSave()
+
+  if (!document.getElementById("description").value.trim()) {
+    alert("Description field is required.")
+    event.preventDefault()
+    return
+  }
+
+  this.submit()
+  })
+
+</script>
+<!-- Script element sourcing TinyMCE -->
+<script type="application/javascript" src="/tinymce/tinymce.min.js"></script>
+<!-- Script element sourcing the TinyMCE configuration -->
+<script type="application/javascript" src="/js/tinymce-config.js"></script>
