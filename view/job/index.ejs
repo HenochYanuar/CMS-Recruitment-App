@@ -23,7 +23,7 @@
           <% context.jobs.forEach(job => { %>
         <!-- CARD START -->
           <div class="col-md-4">
-            <a href="">
+            <a href="/admin/jobs/<%= job.id %>">
              <div class="card p-4 bg-white shadow-lg p-3 mb-5 bg-body-tertiary rounded border border-info">
                <h5 class="fw-bold mt-3"><%= job.title %></h5>
                <p class="text-warning small mb-2"><i class="far fa-user"> </i> <%= job.type %></p>
@@ -36,7 +36,7 @@
         <!-- CARD END -->
         <% }) %>
         <% } else { %>
-          <p class="text-center">No News Articles yet !!.</p>
+          <p class="text-center">No job vacancies yet !!.</p>
         <% } %>
     </div>
     <div style="display: flex; flex-direction:row-reverse;">
