@@ -137,7 +137,17 @@ const getExpiredJobs = async (page, limit, search) => {
   }
 }
 
+const deleteJob = async (id) => {
+  try {
+    return await db('jobs').where({ id }).del()
+
+  } catch (error) {
+    throw new Error('Error deleting job vacancy by id')
+
+  }
+}
+
 module.exports = {
   getCountAll, getAllJobs, create, getOne, update, updateExpired,
-  getExpiredJobs
+  getExpiredJobs, deleteJob
 }

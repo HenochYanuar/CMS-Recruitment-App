@@ -7,8 +7,15 @@
         <li class="mb-4"><i class="far fa-money-bill-alt"></i><%= formatCurrency(context.job.salary_min) %> – <%= formatCurrency(context.job.salary_max)  %>/month</li>
       </ul>
       <div class="d-flex gap-2 mt-5 ">
-        <a href="/admin/jobs/edit/<%= context.job.id %>" class="btn btn-outline-danger rounded-pill px-4 mr-2"><i class="fas fa-trash"></i> Delete</a> 
-        <a href="/admin/jobs/expired/<%= context.job.id %>" class="btn btn-outline-success rounded-pill px-4 mr-2"><i class="fas fa-sync"></i> Unexpire</a>
+        <form class="d-flex" method="POST"
+          action="/admin/jobsExpired/<%= context.job.id %>?_method=DELETE">
+          <div class="ml-auto">
+            <button class="btn btn-outline-danger rounded-pill px-4 mr-2" type="submit"onclick="return confirm('Are you sure you want to remove this item from your list?')">
+              <i class="far fa-trash-alt"></i> Delete
+            </button>
+            <a href="/admin/jobsExpired/unexpired/<%= context.job.id %>" class="btn btn-outline-success rounded-pill px-4 mr-2"><i class="fas fa-sync"></i> Unexpire</a>
+          </div>
+        </form>
       </div>
     </div>
     <div>

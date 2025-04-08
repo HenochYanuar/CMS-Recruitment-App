@@ -16,7 +16,8 @@ jobRouter.get('/jobs/expired/:id', jobController.postExpiredJob)
 
 jobRouter.get('/jobsExpired', jobController.getExpiredJobs)
 jobRouter.get('/jobsExpired/:id', jobController.getDetailExpiredJob)
-// jobRouter.delete('/articles/:id', articleController.deleteArticle)
+jobRouter.get('/jobsExpired/unexpired/:id', jobController.postUnexpiredJob)
+jobRouter.delete('/jobsExpired/:id', jobController.deleteJob)
 
 
 module.exports = {
