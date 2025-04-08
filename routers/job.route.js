@@ -15,6 +15,7 @@ jobRouter.patch('/jobs', jobController.postEditJob)
 jobRouter.get('/jobs/expired/:id', jobController.postExpiredJob)
 
 jobRouter.get('/jobsExpired', jobController.getExpiredJobs)
+jobRouter.get('/jobsExpired/:id', jobController.getDetailExpiredJob)
 // jobRouter.delete('/articles/:id', articleController.deleteArticle)
 
 

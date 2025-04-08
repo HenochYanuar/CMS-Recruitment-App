@@ -1,0 +1,28 @@
+<div class="card shadow rounded-4 p-5 mb-4 ml-5 mr-5">
+  <div class="d-flex justify-content-between align-items-start">
+    <div class="pl-4">
+      <h2 class="fw-bold mt-3"><%= context.job.title %></h2>
+      <ul class="list-unstyled text-muted mb-2">
+        <li class="text-primary large mb-2"><i class="fas fa-circle"></i> <%= context.job.type %></li>
+        <li class="mb-4"><i class="far fa-money-bill-alt"></i><%= formatCurrency(context.job.salary_min) %> – <%= formatCurrency(context.job.salary_max)  %>/month</li>
+      </ul>
+      <div class="d-flex gap-2 mt-5 ">
+        <a href="/admin/jobs/edit/<%= context.job.id %>" class="btn btn-outline-danger rounded-pill px-4 mr-2"><i class="fas fa-trash"></i> Delete</a> 
+        <a href="/admin/jobs/expired/<%= context.job.id %>" class="btn btn-outline-success rounded-pill px-4 mr-2"><i class="fas fa-sync"></i> Unexpire</a>
+      </div>
+    </div>
+    <div>
+      <p class="badge bg-primary border border-info p-2 bold mb-5"> <%= context.job.timeDifference %></p>
+      <div class="d-flex mt-5">
+        <a href="/admin/jobsExpired" class="btn btn-warning rounded-pill px-4 mr-2 mt-5"><i class="fas fa-chevron-left"></i> Back</a>
+      </div>
+    </div>
+  </div>
+
+  <hr class="my-4">
+
+  <div class="pl-4">
+    <h5 class="fw-semibold">Job Descriptions</h5> <hr>
+    <p class="text-muted"><%- context.job.description %></p>
+  </div>
+</div>
