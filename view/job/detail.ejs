@@ -8,11 +8,14 @@
       </ul>
       <div class="d-flex gap-2 mt-5 ">
         <a href="/admin/jobs/edit/<%= context.job.id %>" class="btn btn-warning rounded-pill px-4 mr-2"><i class="fas fa-edit"></i> Edit</a> 
-        <a href="" class="btn btn-danger rounded-pill px-4 mr-2"><i class="fas fa-trash"></i> Expired</a>
+        <a href="/admin/jobs/expired/<%= context.job.id %>" class="btn btn-outline-danger rounded-pill px-4 mr-2"><i class="fas fa-trash"></i> Expired</a>
       </div>
     </div>
     <div>
-      <p class="badge bg-primary border border-info p-2 bold"> <%= context.job.timeDifference %></p>
+      <p class="badge bg-primary border border-info p-2 bold mb-5"> <%= context.job.timeDifference %></p>
+      <div class="d-flex mt-5">
+        <a href="/admin/jobs" class="btn btn-danger rounded-pill px-4 mr-2 mt-5"><i class="fas fa-chevron-left"></i> Back</a>
+      </div>
     </div>
   </div>
 
