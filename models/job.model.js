@@ -68,7 +68,7 @@ const getOne = async (id) => {
   }
 }
 
-const update = async (id, title, description, type, min_salary, max_salary) => {
+const update = async ({id, title, description, type, min_salary, max_salary}) => {
   try {
     return await db('jobs')
       .where('id', id)
@@ -86,6 +86,20 @@ const update = async (id, title, description, type, min_salary, max_salary) => {
   }
 }
 
+const updateExpired = async ({id, isExpired}) => {
+  try {
+    return await db('jobs')
+      .where('id', id)
+      .update({
+        isExpired
+      })
+
+  } catch (error) {
+    throw new Error('Error failed posts the update job vacancy' + error.message)
+
+  }
+}
+
 module.exports = {
-  getCountAll, getAllJobs, create, getOne, update
+  getCountAll, getAllJobs, create, getOne, update, updateExpired
 }

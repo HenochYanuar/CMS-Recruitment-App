@@ -231,6 +231,26 @@ const postEditJob = async (req, res) => {
   }
 }
 
+const postExpiredJob = async (req, res) => {
+  try {
+    // const job = await jobModel.getOne(req.params.id)
+
+    // const expired = true
+    // console.log(job.title)
+    
+    await jobModel.updateExpired({
+      id: req.params.id,
+      isExpired: true
+    })
+    
+    res.status(201).redirect(`/admin/jobs`)
+    
+  } catch (error) {
+    console.error('Error in postExpiredJob:', error.message)
+    res.status(500).render('error/error', err500)
+  }
+}
+
 module.exports = {
-  getAllJobs, formAddJob, postAddJob, getDetailJob, formEditJob, postEditJob
+  getAllJobs, formAddJob, postAddJob, getDetailJob, formEditJob, postEditJob, postExpiredJob
 }
