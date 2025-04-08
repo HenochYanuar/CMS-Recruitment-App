@@ -1,0 +1,64 @@
+<div class="card shadow-lg">
+  <div class="card-header bg-secondary">
+    <div class="text-center "><h2>List of Expired Job Vacancies</h2></div>
+  </div>
+  <div class="card-body">
+    <div class="row mb-4">
+      <div class="col-md-9">
+      </div>
+      <div class="col-md-3">
+        <form method="GET" action="">
+          <div class="input-group">
+            <input type="text" class="form-control" name="search" placeholder="Search job vacancy..." value="<%= context.search %>">
+            <div class="input-group-append">
+              <button class="btn btn-secondary" type="submit"><i class="fa fa-search"></i></button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+    <div class="row">
+        <% if (context.jobs && context.jobs.length > 0) { %>
+          <% context.jobs.forEach(job => { %>
+        <!-- CARD START -->
+          <div class="col-md-4">
+            <a href="/admin/jobs/<%= job.id %>">
+             <div class="card p-4 bg-white shadow-lg p-3 mb-5 bg-body-tertiary rounded border border-info">
+               <h5 class="fw-bold mt-3"><%= job.title %></h5>
+               <p class="text-warning small mb-2"><i class="far fa-user"> </i> <%= job.type %></p>
+               <p class="small text-muted"><i class="far fa-money-bill-alt"> </i> <%= formatCurrency(job.salary_min) %> – <%= formatCurrency(job.salary_max)  %>/month</p>
+               <p class="small mb-1 desc"><i class="fas fa-thumbtack"> </i> <%= job.description %></p>
+               <p class="text-primary small mt-2"><%= job.timeDifference %></p>
+              </div>
+            </a>
+          </div>
+        <!-- CARD END -->
+        <% }) %>
+        <% } else { %>
+          <p class="text-center">No expired job vacancies yet !!.</p>
+        <% } %>
+    </div>
+    <div style="display: flex; flex-direction:row-reverse;">
+      <div class="pagination">
+        <% if (context.currentPage > 1) { %>
+        <a class="btn btn-secondary mr-1"
+          href="?page=<%= context.currentPage - 1 %>&limit=<%= context.limit %>">Previous</a>
+        <% } %>
+
+        <% for (let i = 1; i <= context.totalPages; i++) { %>
+        <% if (i === context.currentPage) { %>
+        <span class="btn btn-primary mr-1"><%= i %></span>
+        <% } else { %>
+        <a class="btn btn-light mr-1"
+          href="?page=<%= i %>&limit=<%= context.limit %>"><%= i %></a>
+        <% } %>
+        <% } %>
+
+        <% if (context.currentPage < context.totalPages) { %>
+        <a class="btn btn-secondary"
+          href="?page=<%= context.currentPage + 1 %>&limit=<%= context.limit %>">Next</a>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</div>

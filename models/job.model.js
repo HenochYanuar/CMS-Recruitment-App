@@ -77,7 +77,8 @@ const update = async ({id, title, description, type, min_salary, max_salary}) =>
         description,
         type,
         salary_min: min_salary,
-        salary_max: max_salary
+        salary_max: max_salary,
+        updated_at: new Date()
       })
 
   } catch (error) {
@@ -91,7 +92,8 @@ const updateExpired = async ({id, isExpired}) => {
     return await db('jobs')
       .where('id', id)
       .update({
-        isExpired
+        isExpired,
+        updated_at: new Date()
       })
 
   } catch (error) {
@@ -100,6 +102,42 @@ const updateExpired = async ({id, isExpired}) => {
   }
 }
 
+const getExpiredJobs = async (page, limit, search) => {
+  try {
+    const offset = (page - 1) * limit
+
+    const jobs = await db('jobs')
+      .where(function () {
+        if (search) {
+          this.where(db.raw('LOWER(title)'), 'like', `%${search.toLowerCase()}%`)
+            .orWhere(db.raw('LOWER(description)'), 'like', `%${search.toLowerCase()}%`)
+            .orWhere(db.raw('LOWER(type)'), 'like', `%${search.toLowerCase()}%`)
+        }
+      })
+      .andWhere({ isExpired: true })
+      .orderBy('updated_at', 'desc')
+      .limit(limit)
+      .offset(offset)
+
+    const [{ count }] = await db('jobs')
+      .where(function () {
+        if (search) {
+          this.where(db.raw('LOWER(title)'), 'like', `%${search.toLowerCase()}%`)
+            .orWhere(db.raw('LOWER(description)'), 'like', `%${search.toLowerCase()}%`)
+            .orWhere(db.raw('LOWER(type)'), 'like', `%${search.toLowerCase()}%`)
+        }
+      })
+      .andWhere({ isExpired: true })
+      .count('jobs.id as count')
+
+    return { jobs, totalItems: parseInt(count) }
+
+  } catch (error) {
+    throw new Error('Error getting all expired jobs' + error.message)
+  }
+}
+
 module.exports = {
-  getCountAll, getAllJobs, create, getOne, update, updateExpired
+  getCountAll, getAllJobs, create, getOne, update, updateExpired,
+  getExpiredJobs
 }
