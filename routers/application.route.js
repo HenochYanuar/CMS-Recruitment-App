@@ -7,6 +7,8 @@ const applicationRouter = express.Router()
 applicationRouter.use(authenticateJWT)
 
 applicationRouter.get('/applications/:id', applicationController.getAllApplications)
+applicationRouter.get('/applications/:id/:user_id', applicationController.getDetailUser)
+applicationRouter.patch('/applications/:id', applicationController.updateStatusApplication)
 
 module.exports = {
   applicationRouter

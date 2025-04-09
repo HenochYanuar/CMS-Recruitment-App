@@ -34,17 +34,27 @@
           <td class="text-center align-middle">
             <%= application.username %>
           </td>
-          <td class="text-center align-middle text-capitalize">
+          <td class="text-center align-middle">
             <%= application.email %>
           </td>
-          <td class="text-center align-middle">
-            <%= application.status %>
+          <td class="text-center align-middle text-capitalize">
+            <% if (application.status === "submitted") {%>
+            <div class="bg-primary py-2 px-3 rounded-pill"><%= application.status %></div>
+            <% } else if (application.status === "reviewed") {%>
+            <div class="bg-secondary py-2 px-3 rounded-pill"><%= application.status %></div>
+            <% } else if (application.status === "interview") {%>
+            <div class="bg-warning py-2 px-3 rounded-pill"><%= application.status %></div>
+            <% } else if (application.status === "hired") {%>
+            <div class="bg-success py-2 px-3 rounded-pill"><%= application.status %></div>
+            <% } else if (application.status === "rejected") {%>
+            <div class="bg-danger py-2 px-3 rounded-pill"><%= application.status %></div>
+            <% }%>
           </td>
           <td class="text-center align-middle">
             <a target="_blank" href="<%= application.file_url %>"><i class="fas fa-external-link-alt"></i> <%= application.file_url %></a>
           </td>
           <td class="text-center align-middle">
-           <a href="" class="btn btn-info">Details</a>
+           <a href="/admin/applications/<%= application.job_id %>/<%= application.user_id %>" class="btn btn-info">Details</a>
           </td>
         </tr>
         <% }) %>

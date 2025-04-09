@@ -1,0 +1,71 @@
+<div class="container mt-5">
+  <div class="card shadow rounded">
+    <div class="card-header bg-primary text-white">
+      <h4 class="mb-0">Applicant Details</h4>
+    </div>
+    <div class="card-body">
+      <div class="row mb-3">
+        <div class="col-md-4 fw-bold bold">Full Name</div>
+        <div class="col-md-8 text-capitalize"><%= context.application.name %></div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-4 fw-bold">Email</div>
+        <div class="col-md-8"><%= context.application.email %></div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-4 fw-bold">Username</div>
+        <div class="col-md-8"><%= context.application.username %></div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-4 fw-bold">Phone Number</div>
+        <div class="col-md-8"><%= context.application.phone %></div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-4 fw-bold">Address</div>
+        <div class="col-md-8"><%= context.application.address %></div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-4 fw-bold">File Resume</div>
+        <div class="col-md-8">
+          <% if (context.application.file_url) { %>
+            <a href="<%= context.application.file_url %>" class="btn btn-sm btn-outline-info" target="_blank">
+              <i class="fas fa-external-link-alt"></i> 
+              Resume / CV
+            </a>
+          <% } else { %>
+            <span class="text-muted">No file</span>
+          <% } %>
+        </div>
+      </div>
+      <div class="row mb-3 text-capitalize">
+        <div class="col-md-4 fw-bold">Status</div>
+        <form action="/admin/applications/<%= context.application.id %>?_method=PATCH" method="POST">
+          <div class="d-flex align-items-center gap-2">
+            <span class="py-2 px-3 rounded-pill mr-3 text-capitalize
+              <%= context.application.status === 'submitted' ? 'bg-primary' : 
+                  context.application.status === 'reviewed' ? 'bg-secondary' :
+                  context.application.status === 'interview' ? 'bg-warning' :
+                  context.application.status === 'rejected' ? 'bg-danger' : 
+                  'bg-light text-dark' 
+              %>">
+              <%= context.application.status %>
+            </span>
+        
+            <select name="status" class="form-select form-select-sm w-auto py-2 px-3 rounded-pill btn btn-outline-info" onchange="this.form.submit()">
+              <option disabled selected class="bg-white">Change Status</option>
+              <% if (context.application.status !== 'reviewed' && context.application.status !== 'interview' && context.application.status !== 'rejected') { %>
+                <option value="reviewed" class="bg-secondary">Reviewed</option>
+              <% } %>
+              <% if (context.application.status !== 'interview') { %>
+                <option value="interview" class="bg-warning">Interview</option>
+              <% } %>
+              <% if (context.application.status !== 'rejected') { %>
+                <option value="rejected" class="bg-danger">Rejected</option>
+              <% } %>
+            </select>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

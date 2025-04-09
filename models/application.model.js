@@ -51,6 +51,41 @@ const findByJobId = async (jobId, page, limit, search) => {
   }
 }
 
+const getDetailUser = async (jobId, userId) => {
+  try {
+    return await db('users')
+      .join('user_details', 'users.id', 'user_details.user_id')
+      .leftJoin('resumes', 'users.id', 'resumes.user_id')
+      .leftJoin('applications', 'users.id', 'applications.user_id')
+      .select(
+        'users.*',
+        'user_details.name as name',
+        'user_details.phone as phone',
+        'user_details.address as address',
+        'resumes.file_url as file_url',
+        'applications.status as status',
+      )
+      .where('users.id', userId)
+      .andWhere('applications.job_id', jobId)
+      .first() 
+
+  } catch (error) {
+    throw new Error('Error getting user with detail: ' + error.message)
+  }
+}
+
+const updateStatusApplication = async (applicationId, status) => {
+  try {
+    return await db('applications')
+      .where('id', applicationId)
+      .update({ status })
+      .returning('*')
+      
+  } catch (error) {
+    throw new Error('Error updating application status: ' + error.message)
+  }
+}
+
 module.exports = {
-  findByJobId
+  findByJobId, getDetailUser, updateStatusApplication
 }
