@@ -39,7 +39,7 @@
       </div>
       <div class="row mb-3 text-capitalize">
         <div class="col-md-4 fw-bold">Status</div>
-        <form action="/admin/applications/<%= context.application.id %>?_method=PATCH" method="POST">
+        <form action="/admin/applications/<%= context.application.application_id %>?_method=PATCH" method="POST">
           <div class="d-flex align-items-center gap-2">
             <span class="py-2 px-3 rounded-pill mr-3 text-capitalize
               <%= context.application.status === 'submitted' ? 'bg-primary' : 
@@ -59,7 +59,7 @@
               <% if (context.application.status !== 'interview') { %>
                 <option value="interview" class="bg-warning">Interview</option>
               <% } %>
-              <% if (context.application.status !== 'rejected') { %>
+              <% if (context.application.status !== 'rejected' && context.application.status !== 'interview') { %>
                 <option value="rejected" class="bg-danger">Rejected</option>
               <% } %>
             </select>

@@ -64,6 +64,7 @@ const getDetailUser = async (jobId, userId) => {
         'user_details.address as address',
         'resumes.file_url as file_url',
         'applications.status as status',
+        'applications.id as application_id'
       )
       .where('users.id', userId)
       .andWhere('applications.job_id', jobId)
@@ -71,6 +72,16 @@ const getDetailUser = async (jobId, userId) => {
 
   } catch (error) {
     throw new Error('Error getting user with detail: ' + error.message)
+  }
+}
+
+const getOne = async (id) => {
+  try {
+    return await db('applications').where({ id }).first()
+
+  } catch (error) {
+    throw new Error('Error getting one application: ' + error.message)
+
   }
 }
 
@@ -87,5 +98,5 @@ const updateStatusApplication = async (applicationId, status) => {
 }
 
 module.exports = {
-  findByJobId, getDetailUser, updateStatusApplication
+  findByJobId, getDetailUser, updateStatusApplication, getOne
 }
