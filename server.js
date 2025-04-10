@@ -10,6 +10,7 @@ const { err500, err404 } = require('./utils/error')
 const { loginRouter } = require('./routers/login.route')
 const { dashboardRouter } = require('./routers/dashboard.route')
 const { jobRouter } = require('./routers/job.route')
+const { interviewRouter } = require('./routers/interview.route')
 const { applicationRouter } = require('./routers/application.route')
 const { userRouter } = require('./routers/user.route')
 
@@ -55,6 +56,8 @@ server.use('/admin', dashboardRouter)
 server.use('/admin', jobRouter)
 
 server.use('/admin', applicationRouter)
+
+server.use('/admin', interviewRouter)
 
 server.use('/admin', userRouter)
 
