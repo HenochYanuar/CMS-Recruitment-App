@@ -45,6 +45,7 @@
               <%= context.application.status === 'submitted' ? 'bg-primary' : 
                   context.application.status === 'reviewed' ? 'bg-secondary' :
                   context.application.status === 'interview' ? 'bg-warning' :
+                  context.application.status === 'hired' ? 'bg-success' :
                   context.application.status === 'rejected' ? 'bg-danger' : 
                   'bg-light text-dark' 
               %>">
@@ -53,13 +54,16 @@
         
             <select name="status" class="form-select form-select-sm w-auto py-2 px-3 rounded-pill btn btn-outline-info" onchange="this.form.submit()">
               <option disabled selected class="bg-white">Change Status</option>
-              <% if (context.application.status !== 'reviewed' && context.application.status !== 'interview' && context.application.status !== 'rejected') { %>
+              <% if (context.application.status === 'submitted') { %>
                 <option value="reviewed" class="bg-secondary">Reviewed</option>
               <% } %>
-              <% if (context.application.status !== 'interview') { %>
+              <% if (context.application.status !== 'interview' && context.application.status !== 'hired') { %>
                 <option value="interview" class="bg-warning">Interview</option>
               <% } %>
-              <% if (context.application.status !== 'rejected' && context.application.status !== 'interview') { %>
+              <% if (context.application.status !== 'hired' && context.application.status !== 'submitted' && context.application.status !== 'reviewed') { %>
+                <option value="hired" class="bg-success">Hired</option>
+              <% } %>
+              <% if (context.application.status !== 'rejected' && context.application.status !== 'hired') { %>
                 <option value="rejected" class="bg-danger">Rejected</option>
               <% } %>
             </select>
