@@ -84,7 +84,7 @@ const getAllJobsInterview = async (page, limit, search) => {
 
 const getDetailJobInterview = async (jobId, page, limit, search) => {
   try {
-    const offset = (page - 1) * limit;
+    const offset = (page - 1) * limit
 
     const jobs = await db('jobs')
       .leftJoin('applications', 'jobs.id', 'applications.job_id')
@@ -93,6 +93,7 @@ const getDetailJobInterview = async (jobId, page, limit, search) => {
       .leftJoin('user_details', 'users.id', 'user_details.user_id')
       .select(
         'jobs.*',
+        'interviews.id as interview_id',
         'interviews.interview_date',
         'interviews.status as interview_status',
         'interviews.location',
@@ -120,6 +121,7 @@ const getDetailJobInterview = async (jobId, page, limit, search) => {
         'users.id',
         'users.username',
         'users.email',
+        'interviews.id',
         'interviews.interview_date',
         'interviews.status',
         'interviews.location',
@@ -130,7 +132,7 @@ const getDetailJobInterview = async (jobId, page, limit, search) => {
       )
       .orderBy('interviews.updated_at', 'desc')
       .limit(limit)
-      .offset(offset);
+      .offset(offset)
 
     const [{ count }] = await db('jobs')
       .leftJoin('applications', 'jobs.id', 'applications.job_id')
@@ -148,18 +150,57 @@ const getDetailJobInterview = async (jobId, page, limit, search) => {
             .orWhere(db.raw('LOWER(interviews.status)'), 'like', `%${search.toLowerCase()}%`)
         }
       })
-      .countDistinct('users.id as count');
+      .countDistinct('users.id as count')
 
     return {
       jobInterviews: jobs,
       totalItems: parseInt(count)
-    };
+    }
   } catch (error) {
-    throw new Error('Error getting detail job interview : ' + error.message);
+    throw new Error('Error getting detail job interview : ' + error.message)
   }
-};
+}
 
+const getDetailInterview = async (interviewId) => {
+  try {
+    const interview = await db('interviews')
+      .leftJoin('applications', 'interviews.application_id', 'applications.id')
+      .leftJoin('jobs', 'applications.job_id', 'jobs.id')
+      .leftJoin('users', 'applications.user_id', 'users.id')
+      .leftJoin('user_details', 'users.id', 'user_details.user_id')
+      .select(
+        'interviews.*',
+        'jobs.id as job_id',
+        'jobs.title',
+        'users.id as user_id',
+        'users.username',
+        'user_details.name'
+      )
+      .where('interviews.id', interviewId)
+      .first()
 
+    return interview
+  } catch (error) {
+    throw new Error(`Error retrieving interview detail: ${error.message}`)
+  }
+}
+
+const postDetailInterview = async ({id, interview_date, location, status}) => {
+  try {
+    return await db('interviews')
+      .where('id', id)
+      .update({
+        interview_date, 
+        location, 
+        status,
+        updated_at: new Date()
+      })
+
+  } catch (error) {
+    throw new Error('Error failed posts the update detail interview' + error.message)
+
+  }
+}
 
 const getOne = async (id) => {
   try {
@@ -190,7 +231,7 @@ const deleteInterview = async (id) => {
   }
 }
 
-
 module.exports = {
-  getCountAll, getAllJobsInterview, createInterview, getOne, deleteInterview, getDetailJobInterview
+  getCountAll, getAllJobsInterview, createInterview, getOne, deleteInterview, getDetailJobInterview,
+  getDetailInterview, postDetailInterview
 }

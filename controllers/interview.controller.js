@@ -1,11 +1,7 @@
 const moment = require('moment')
-const { decode } = require('html-entities')
 const userModel = require('../models/user.model')
 const interviewModel = require('../models/interview.model')
 const jobModel = require('../models/job.model')
-const tagsModel = require('../models/tags.model')
-const saveImgMiddleware = require('../middleware/saveImgMiddleware')
-const idCreator = require('../utils/idCreator')
 const formatCurrency = require('../utils/formatCurrency')
 const { err500, err404 } = require('../utils/error')
 
@@ -151,6 +147,83 @@ const getDetailJobInterview = async (req, res) => {
   }
 }
 
+const getDetailInterview = async (req, res) => {
+  try {
+    const user = await userModel.findByEmail(req.user.email)
+
+    if (!user) {
+      return res.status(404).render('error/error', err404)
+    }
+
+    const raw = await interviewModel.getDetailInterview(req.params.id)
+
+    if (!raw) {
+      return res.status(404).render('error/error', err404)
+    }
+
+    const interview = {
+      id: raw.id,
+      application_id: raw.application_id,
+      schedule: raw.schedule,
+      interview_date: raw.interview_date,
+      location: raw.location,
+      status: raw.status,
+      created_at: raw.created_at,
+      updated_at: raw.updated_at
+    }
+
+    const job = {
+      id: raw.job_id,
+      title: raw.title
+    }
+
+    const userDetail = {
+      id: raw.user_id,
+      username: raw.username,
+      name: raw.name
+    }
+
+    const context = {
+      user, 
+      interview,
+      job,
+      userDetail
+    }
+
+    const title = `Interview Detail for ${job.title}`
+
+    res.status(200).render('interview/formEdit', {
+      context,
+      title,
+      layout
+    })
+
+  } catch (error) {
+    console.error('Error in getInterviewDetail:', error)
+    res.status(500).render('error/error', err500)
+  }
+}
+
+const postDetailInterview = async (req, res) => {
+  try {
+
+    let { id, job_id, interview_date, location, status } = req.body
+    
+    await interviewModel.postDetailInterview({
+      id,
+      interview_date, 
+      location, 
+      status
+    })
+    
+    res.status(201).redirect(`/admin/interviews/${job_id}`)
+    
+  } catch (error) {
+    console.error('Error in postDetailInterview:', error.message)
+    res.status(500).render('error/error', err500)
+  }
+}
+
 module.exports = {
-  getJobInterview, getDetailJobInterview
+  getJobInterview, getDetailJobInterview, getDetailInterview, postDetailInterview
 }

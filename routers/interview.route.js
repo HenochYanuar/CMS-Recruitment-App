@@ -8,6 +8,8 @@ interviewRouter.use(authenticateJWT)
 
 interviewRouter.get('/interviews', interviewController.getJobInterview)
 interviewRouter.get('/interviews/:id', interviewController.getDetailJobInterview)
+interviewRouter.get('/interviews/:jobId/:id', interviewController.getDetailInterview)
+interviewRouter.patch('/interviews/:jobId/:id', interviewController.postDetailInterview)
 
 module.exports = {
   interviewRouter

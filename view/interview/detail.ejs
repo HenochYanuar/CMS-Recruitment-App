@@ -67,12 +67,12 @@
             <% if (!jobInterview.interview_date) { %>
                 <div class="bg-secondary py-2 px-3 rounded-pill">No schedule</div>
             <% } else { %>
-              <div class="bg-secondary py-2 px-3 rounded-pill"><%= jobInterview.interview_date %></div>
+              <div class="bg-black py-2 px-3 rounded-pill"><%= new Date(jobInterview.interview_date).toString().split(' GMT')[0] %></div>
             <% } %>
           </td>
           <td class="text-center align-middle">
-            <a href="/admin/jobInterviews/<%= jobInterview.jobData_id %>/<%= jobInterview.user_id %>" class="btn btn-warning">Edit</a> |
-            <a href="/admin/jobInterviews/<%= jobInterview.jobData_id %>/<%= jobInterview.user_id %>" class="btn btn-info">Details</a>
+            <a href="/admin/interviews/<%= jobInterview.id %>/<%= jobInterview.interview_id %>" class="btn btn-warning">Edit</a> |
+            <a href="/admin/jobInterviews/<%= jobInterview.jobData_id %>/<%= jobInterview.user_id %>" class="btn btn-info">Invite</a>
           </td>
         </tr>
         <% }) %>

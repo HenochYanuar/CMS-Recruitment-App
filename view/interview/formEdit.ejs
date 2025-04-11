@@ -1,0 +1,117 @@
+<div class="card shadow-sm mb-5">
+  <div class="card-header pb-0">
+    <div class="container-fluid">
+      <h4>Interview Schedule Form</h4>
+      <p>Update a interview schedule in the following form</p>
+    </div>
+  </div>
+  <div class="card-body">
+    <form action="/admin/interviews/<%= context.job.id%>/<%= context.interview.id %>?_method=PATCH" method="POST" >
+      <input type="text" id="id" name="id" value="<%= context.interview.id %>" hidden>
+      <input type="text" id="job_id" name="job_id" value="<%= context.job.id %>" hidden>
+      <table class="table table-borderless">
+        <tr>
+          <td class="text-right col-2">
+            <label style="color: #838383;" for="name">Applicant Name</label>
+          </td>
+          <td class="col-10">
+            <div class="form-group">
+              <input required class="form-control w-100 text-capitalize" type="text" readonly value="<%= context.userDetail.name %>"
+                id="name"
+                name="name">
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="text-right col-2">
+            <label style="color: #838383;" for="title">Job Vecancy</label>
+          </td>
+          <td class="col-10">
+            <div class="form-group">
+              <input required class="form-control w-100 text-capitalize" type="text" readonly value="<%= context.job.title %> / ID: <%= context.job.id %>"
+                id="title"
+                name="title">
+            </div>
+          </td>
+        </tr>
+        <% 
+          function toDatetimeLocal(date) {
+            const d = new Date(date)
+            d.setMinutes(d.getMinutes() - d.getTimezoneOffset()) 
+            return d.toISOString().slice(0,16)
+          }
+        %>
+        <tr>
+          <td class="text-right col-2">
+            <label style="color: #838383;" for="interview_date">Interview Date</label>
+          </td>
+          <td class="col-10">
+            <div class="form-group">
+              <input required class="form-control w-100" type="datetime-local" value="<%= context.interview.interview_date ? toDatetimeLocal(context.interview.interview_date) : '' %>"
+                id="interview_date"
+                name="interview_date">
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="text-right col-2">
+            <label style="color: #838383;" for="location">Location</label>
+          </td>
+          <td class="col-10">
+            <div class="form-group">
+              <textarea required class="form-control w-100" type="text"
+                placeholder="Include interview location details or a meeting link if you are scheduling an online interview !."
+                id="location"
+                name="location"><%= context.interview.location %></textarea>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="text-right col-2">
+            <label style="color: #838383;" for="status">Status</label>
+          </td>
+          <td class="col-10">
+            <div class="d-flex align-items-center gap-2">
+              <span class="py-2 px-3 rounded-pill mr-3 text-capitalize
+                <%= context.interview.status === 'scheduled' ? 'bg-primary' : 
+                    context.interview.status === 'completed' ? 'bg-success' :
+                    context.interview.status === 'canceled' ? 'bg-danger' : 
+                    'bg-light text-dark' 
+                %>">
+                <%= context.interview.status %>
+              </span>
+          
+              <select name="status" class="form-select form-select-sm w-auto py-2 px-3 rounded-pill btn btn-outline-info">
+                <option disabled selected class="bg-white">Change Status</option>
+                <% if (context.interview.status !== 'scheduled') { %>
+                  <option value="scheduled" class="bg-primary">scheduled</option>
+                <% } %>
+                <% if (context.interview.status !== 'completed') { %>
+                  <option value="completed" class="bg-success">Completed</option>
+                <% } %>
+                <% if (context.interview.status !== 'canceled' && context.interview.status !== 'completed') { %>
+                  <option value="canceled" class="bg-danger">Canceled</option>
+                <% } %>
+              </select>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <label style="color: #838383;"></label>
+          </td>
+          <td>
+            <div>
+              <button class="btn btn-info pb-2 mb-3" type="submit"
+                style="width: 150px; height: 48px; background-color: #f23567; border: #f23567;"
+                onMouseOver="this.style.background='#f5497b'; this.style.transition='transform 0.3s ease'"
+                onMouseOut="this.style.background='#f23567';">
+                Save
+              </button>
+            </div>
+          </td>
+        </tr>
+      </table>
+    </form>
+  </div>
+</div>
