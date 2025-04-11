@@ -10,6 +10,8 @@ interviewRouter.get('/interviews', interviewController.getJobInterview)
 interviewRouter.get('/interviews/:id', interviewController.getDetailJobInterview)
 interviewRouter.get('/interviews/:jobId/:id', interviewController.getDetailInterview)
 interviewRouter.patch('/interviews/:jobId/:id', interviewController.postDetailInterview)
+interviewRouter.get('/interviews/invite/:jobId/:id', interviewController.getDetailInvite)
+interviewRouter.post('/interviews/invite/:jobId/:id', interviewController.postInvitation)
 
 module.exports = {
   interviewRouter

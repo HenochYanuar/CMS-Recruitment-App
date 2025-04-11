@@ -30,6 +30,7 @@ const getAllJobsInterview = async (page, limit, search) => {
         'user_details.name',
         'user_details.phone',
         'user_details.address',
+        'interviews.status as interview_status',
       )
       .count('interviews.id as interview_count')
       .where(function () {
@@ -42,6 +43,7 @@ const getAllJobsInterview = async (page, limit, search) => {
             .orWhere(db.raw('LOWER(user_details.name)'), 'like', `%${search.toLowerCase()}%`)
             .orWhere(db.raw('LOWER(user_details.phone)'), 'like', `%${search.toLowerCase()}%`)
             .orWhere(db.raw('LOWER(user_details.address)'), 'like', `%${search.toLowerCase()}%`)
+            .orWhere(db.raw('LOWER(interviews.status)'), 'like', `%${search.toLowerCase()}%`)
         }
       })
       .groupBy(
@@ -51,7 +53,8 @@ const getAllJobsInterview = async (page, limit, search) => {
         'users.email',
         'user_details.name',
         'user_details.phone',
-        'user_details.address'
+        'user_details.address',
+        'interviews.status',
       )
       .orderBy('jobs.updated_at', 'desc')
       .limit(limit)
@@ -72,6 +75,7 @@ const getAllJobsInterview = async (page, limit, search) => {
             .orWhere(db.raw('LOWER(user_details.name)'), 'like', `%${search.toLowerCase()}%`)
             .orWhere(db.raw('LOWER(user_details.phone)'), 'like', `%${search.toLowerCase()}%`)
             .orWhere(db.raw('LOWER(user_details.address)'), 'like', `%${search.toLowerCase()}%`)
+            .orWhere(db.raw('LOWER(interviews.status)'), 'like', `%${search.toLowerCase()}%`)
         }
       })
       .countDistinct('jobs.id as count')
@@ -170,11 +174,23 @@ const getDetailInterview = async (interviewId) => {
       .leftJoin('user_details', 'users.id', 'user_details.user_id')
       .select(
         'interviews.*',
+
+        // Job Info
         'jobs.id as job_id',
         'jobs.title',
+        'jobs.description',
+        'jobs.type',
+        'jobs.updated_at',
+
+        // User Info
         'users.id as user_id',
         'users.username',
-        'user_details.name'
+        'users.email',
+
+        // User Detail
+        'user_details.name',
+        'user_details.phone',
+        'user_details.address'
       )
       .where('interviews.id', interviewId)
       .first()

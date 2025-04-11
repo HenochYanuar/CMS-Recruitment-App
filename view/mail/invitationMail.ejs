@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <!-- Google Font: Source Sans Pro -->
+    <link rel="stylesheet"
+      href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet"
+      href="/assets/plugins/fontawesome-free/css/all.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="/assets/dist/css/adminlte.min.css">
+  </head>
+  <body>
+    <h2>Interview Invitation</h2>
+    <p><%= data.job.id %> / <%= data.interview.id %></p>
+    <p class="text-capitalize">Dear <%= data.userDetail.name %>,</p>
+    <p>We are pleased to invite you to an interview for the position of <strong class="text-capitalize"><%= data.job.title %></strong>.</p>
+    <p>Details:</p>
+    <ul>
+      <% 
+          function toDateLocal(date) {
+            const d = new Date(date)
+            d.setMinutes(d.getMinutes() - d.getTimezoneOffset()) 
+            return d.toISOString().slice(0,10)
+          }
+
+          function toTimeLocal(date) {
+            const d = new Date(date)
+            d.setMinutes(d.getMinutes() - d.getTimezoneOffset()) 
+            return d.toISOString().slice(11,16)
+          }
+        %>
+      <li>Date: <%= toDateLocal(data.interview.interview_date) %></li> 
+      <li>Time: <%= toTimeLocal(data.interview.interview_date) %> WIB</li> 
+      <li>Location: <%= data.interview.location ? data.interview.location : 'To be announced' %></li>
+    </ul>
+    <p>Please confirm your attendance by replying to this email.</p>
+    <br>
+    <p>Best regards,</p>
+    <p>HR Team</p>
+  </body>
+</html>

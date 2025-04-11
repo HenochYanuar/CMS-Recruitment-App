@@ -1,0 +1,86 @@
+<div class="container mt-5">
+  <div class="card shadow rounded">
+    <div class="card-header bg-primary text-white">
+      <h4 class="mb-0 text-center">Interview Details</h4>
+    </div>
+    <div class="card-body">
+      <h5 class="mb-3">Job Detail</h5>
+      <div class="row mb-3">
+        <div class="col-md-4 pl-5 fw-bold bold">Job Title</div>
+        <div class="col-md-8 text-capitalize"><%= context.job.title %> / <%= context.job.type %></div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-4 pl-5 fw-bold">Job ID / Interview ID</div>
+        <div class="col-md-8"><%= context.job.id %> / <%= context.interview.id %></div>
+      </div>
+      <% 
+          function toDatetimeLocal(date) {
+            const d = new Date(date)
+            d.setMinutes(d.getMinutes() - d.getTimezoneOffset()) 
+            return d.toISOString().slice(0,16)
+          }
+        %>
+      <div class="row mb-3">
+        <div class="col-md-4 pl-5 fw-bold">Interview Date</div>
+        <div class="col-md-8"><%= toDatetimeLocal(context.interview.interview_date) %> WIB</div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-4 pl-5 fw-bold">Interview Location</div>
+        <div class="col-md-8"><%= context.interview.location %></div>
+      </div>
+
+      <hr>
+
+      <h5 class="mb-3 p-2">Aplicant Detail</h5>
+      <div class="row mb-3">
+        <div class="col-md-4 pl-5 fw-bold bold">Full Name</div>
+        <div class="col-md-8 text-capitalize"><%= context.userDetail.name %></div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-4 pl-5 fw-bold">Email</div>
+        <div class="col-md-8"><%= context.userDetail.email %></div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-4 pl-5 fw-bold">Username</div>
+        <div class="col-md-8"><%= context.userDetail.username %></div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-4 pl-5 fw-bold">Phone Number</div>
+        <div class="col-md-8"><%= context.userDetail.phone %></div>
+      </div>
+      <div class="row mb-3">
+        <div class="col-md-4 pl-5 fw-bold">Address</div>
+        <div class="col-md-8"><%= context.userDetail.address %></div>
+      </div>
+      <div class="row mb-3 text-capitalize">
+        <div class="col-md-4 pl-5 fw-bold">Status</div>
+        <div class="d-flex align-items-center gap-2">
+          <span class="py-2 px-3 rounded-pill mr-3 text-capitalize
+            <%= context.interview.status === 'scheduled' ? 'bg-primary' : 
+                context.interview.status === 'completed' ? 'bg-success' :
+                context.interview.status === 'canceled' ? 'bg-danger' :
+                'bg-light text-dark' 
+            %>">
+            <%= context.interview.status %>
+          </span>
+        </div>
+      </div>
+
+      <hr>
+
+      <div class="row mb-3 mt-5">
+        <div class="col-md-4 pl-5 fw-bold"></div>
+        <div class="d-flex align-items-center gap-2">
+          <form action="/admin/interviews/invite/<%= context.job.id %>/<%= context.interview.id %>" method="POST">
+            <button 
+              style="cursor:<%= context.interview.status === 'scheduled' ? 'pointer' : 'not-allowed' %>;"
+              class="py-2 px-3 rounded-pill mr-3 text-capitalize text-white <%= context.interview.status === 'scheduled' ? 'bg-info ' : 'bg-secondary' %>"
+              <%= context.interview.status !== 'scheduled' ? 'disabled' : '' %>>
+              <i class="fas fa-paper-plane"></i> Send Mail
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

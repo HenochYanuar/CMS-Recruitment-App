@@ -3,6 +3,7 @@ const userModel = require('../models/user.model')
 const interviewModel = require('../models/interview.model')
 const jobModel = require('../models/job.model')
 const formatCurrency = require('../utils/formatCurrency')
+const MailRegister = require('../middleware/sendMailMiddleware')
 const { err500, err404 } = require('../utils/error')
 
 const layout = 'layout/index'
@@ -204,6 +205,119 @@ const getDetailInterview = async (req, res) => {
   }
 }
 
+const getDetailInvite = async (req, res) => {
+  try {
+    const user = await userModel.findByEmail(req.user.email)
+
+    if (!user) {
+      return res.status(404).render('error/error', err404)
+    }
+
+    const raw = await interviewModel.getDetailInterview(req.params.id)
+
+    if (!raw) {
+      return res.status(404).render('error/error', err404)
+    }
+
+    const interview = {
+      id: raw.id,
+      application_id: raw.application_id,
+      schedule: raw.schedule,
+      interview_date: raw.interview_date,
+      location: raw.location,
+      status: raw.status,
+      created_at: raw.created_at,
+      updated_at: raw.updated_at
+    }
+
+    const job = {
+      id: raw.job_id,
+      title: raw.title,
+      description:raw.description,
+      type:raw.type,
+    }
+
+    const userDetail = {
+      id: raw.user_id,
+      username: raw.username,
+      name: raw.name,
+      phone: raw.phone,
+      address: raw.address,
+      email: raw.email,
+    }
+
+    const context = {
+      user, 
+      interview,
+      job,
+      userDetail
+    }
+
+    const title = `Detail Interview Invitation for ${userDetail.name}`
+
+    res.status(200).render('interview/invite', {
+      context,
+      title,
+      layout
+    })
+
+  } catch (error) {
+    console.error('Error in getDetailInvite:', error)
+    res.status(500).render('error/error', err500)
+  }
+}
+
+const postInvitation = async (req, res) => {
+  try {
+    const raw = await interviewModel.getDetailInterview(req.params.id)
+
+    if (!raw) {
+      return res.status(404).render('error/error', err404)
+    }
+
+    const interview = {
+      id: raw.id,
+      application_id: raw.application_id,
+      schedule: raw.schedule,
+      interview_date: raw.interview_date,
+      location: raw.location,
+      status: raw.status,
+      created_at: raw.created_at,
+      updated_at: raw.updated_at
+    }
+
+    const job = {
+      id: raw.job_id,
+      title: raw.title,
+      description:raw.description,
+      type:raw.type,
+    }
+
+    const userDetail = {
+      id: raw.user_id,
+      username: raw.username,
+      name: raw.name,
+      phone: raw.phone,
+      address: raw.address,
+      email: raw.email,
+    }
+
+    const mail = new MailRegister({
+      interview,
+      job,
+      userDetail
+    })
+  
+    await mail.sendMail()
+
+    return
+    
+  } catch (error) {
+    console.error('Error in postInvitation:', error)
+    res.status(500).render('error/error', err500)
+  }
+}
+
 const postDetailInterview = async (req, res) => {
   try {
 
@@ -225,5 +339,5 @@ const postDetailInterview = async (req, res) => {
 }
 
 module.exports = {
-  getJobInterview, getDetailJobInterview, getDetailInterview, postDetailInterview
+  getJobInterview, getDetailJobInterview, getDetailInterview, postDetailInterview, getDetailInvite, postInvitation
 }
