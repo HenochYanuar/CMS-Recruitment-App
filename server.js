@@ -1,7 +1,6 @@
 require('dotenv').config()
 const express = require('express')
 const expressLayouts = require('express-ejs-layouts')
-const jwt = require('jsonwebtoken')
 const cookieParser = require('cookie-parser')
 const path = require('path')
 const methodOverride = require('method-override')
@@ -12,7 +11,6 @@ const { dashboardRouter } = require('./routers/dashboard.route')
 const { jobRouter } = require('./routers/job.route')
 const { interviewRouter } = require('./routers/interview.route')
 const { applicationRouter } = require('./routers/application.route')
-const { userRouter } = require('./routers/user.route')
 
 const port = process.env.PORT
 
@@ -58,8 +56,6 @@ server.use('/admin', jobRouter)
 server.use('/admin', applicationRouter)
 
 server.use('/admin', interviewRouter)
-
-server.use('/admin', userRouter)
 
 
 server.use((req, res, next) => {

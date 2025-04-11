@@ -42,7 +42,7 @@ const getAllUsers = async (role, page, limit, search) => {
               .orWhere(db.raw('LOWER(email)'), 'like', `%${search.toLowerCase()}%`)
 
               if (isRegisterCondition !== null) {
-                this.orWhere('isRegister', isRegisterCondition);
+                this.orWhere('isRegister', isRegisterCondition)
               }
         }
       })
@@ -59,7 +59,7 @@ const getAllUsers = async (role, page, limit, search) => {
               .orWhere(db.raw('LOWER(email)'), 'like', `%${search.toLowerCase()}%`)
               
               if (isRegisterCondition !== null) {
-                this.orWhere('isRegister', isRegisterCondition);
+                this.orWhere('isRegister', isRegisterCondition)
               }
         }
       }) 
