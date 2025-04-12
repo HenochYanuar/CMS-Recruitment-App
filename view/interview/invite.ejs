@@ -1,3 +1,10 @@
+<% if (query) { %>
+  <div class="alert alert-success d-flex align-items-center" role="alert">
+    <div>
+      <p style="font-size: 18px; margin: 0;"><i class="fas fa-envelope-open"></i> <%= query %> <i class="fas fa-check"></i></p>
+    </div>
+  </div>
+<% } %>       
 <div class="container mt-5">
   <div class="card shadow rounded">
     <div class="card-header bg-primary text-white">
@@ -74,7 +81,7 @@
           <form action="/admin/interviews/invite/<%= context.job.id %>/<%= context.interview.id %>" method="POST">
             <button 
               style="cursor:<%= context.interview.status === 'scheduled' ? 'pointer' : 'not-allowed' %>;"
-              class="py-2 px-3 rounded-pill mr-3 text-capitalize text-white <%= context.interview.status === 'scheduled' ? 'bg-info ' : 'bg-secondary' %>"
+              class="py-2 px-3 rounded-pill mr-3 text-capitalize text-white <%= context.interview.status === 'scheduled' ? 'bg-success ' : 'bg-secondary' %>"
               <%= context.interview.status !== 'scheduled' ? 'disabled' : '' %>>
               <i class="fas fa-paper-plane"></i> Send Mail
             </button>
