@@ -255,10 +255,14 @@ const getDetailInvite = async (req, res) => {
 
     const title = `Detail Interview Invitation for ${userDetail.name}`
 
+    const query = req.query.success || ''
+    console.log(query)
+
     res.status(200).render('interview/invite', {
       context,
       title,
-      layout
+      layout,
+      query
     })
 
   } catch (error) {
@@ -310,7 +314,7 @@ const postInvitation = async (req, res) => {
   
     await mail.sendMail()
 
-    return
+    res.redirect(`/admin/interviews/invite/${job.id}/${interview.id}?success=Interview invitation email successfully sent to applicant`)
     
   } catch (error) {
     console.error('Error in postInvitation:', error)
