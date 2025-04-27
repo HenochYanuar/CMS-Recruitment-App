@@ -14,12 +14,10 @@ const { applicationRouter } = require('./routers/application.route')
 
 const port = process.env.PORT
 
-// === Tambahkan ini ===
 const knex = require('knex')
 const knexConfig = require('./config/knexfile')
 const environment = process.env.NODE_ENV || 'development'
 const db = knex(knexConfig[environment])
-// ======================
 
 const server = express()
 
@@ -72,6 +70,8 @@ server.use((req, res, next) => {
 db.migrate.latest()
   .then(() => {
     console.log('Database migrated successfully')
+    
+    module.exports = server
 
     server.listen(port, () => {
       console.log(`Server is running at http://localhost:${port}`)
