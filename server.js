@@ -14,6 +14,13 @@ const { applicationRouter } = require('./routers/application.route')
 
 const port = process.env.PORT
 
+// === Tambahkan ini ===
+const knex = require('knex')
+const knexConfig = require('./config/knexfile')
+const environment = process.env.NODE_ENV || 'development'
+const db = knex(knexConfig[environment])
+// ======================
+
 const server = express()
 
 server.set('view engine', 'ejs')
@@ -62,7 +69,16 @@ server.use((req, res, next) => {
   res.status(404).render('error/error', err404)
 })
 
-server.listen(port, () => {
-  console.log(`Server is running at http://localhost:${port}`)
-  console.log(`Follow this url to access the dashboard: http://localhost:${port}/admin/dashboard`)
-})
+db.migrate.latest()
+  .then(() => {
+    console.log('Database migrated successfully')
+
+    server.listen(port, () => {
+      console.log(`Server is running at http://localhost:${port}`)
+      console.log(`Follow this url to access the dashboard: http://localhost:${port}/admin/dashboard`)
+    })
+  })
+  .catch((err) => {
+    console.error('Migration failed:', err)
+    process.exit(1)
+  })
