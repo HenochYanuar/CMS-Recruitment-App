@@ -300,7 +300,7 @@ const getExpiredJobs = async (req, res) => {
 
     const title = 'List of Expired Job Vacancies'
 
-    res.status(200).render('ExpiredJob/index', {
+    res.status(200).render('expiredJob/index', {
       context,
       title,
       layout,
